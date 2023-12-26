@@ -10,6 +10,7 @@
 	</parent>
 	<groupId>com.sheru</groupId>
 	<artifactId>Auth-Service</artifactId>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Auth-Service</name>
 	<description>Demo project for Spring Boot</description>
@@ -17,6 +18,11 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- Tomcat integration -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>

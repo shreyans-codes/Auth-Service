@@ -43,10 +43,7 @@ public class AuthenticationService {
         roleSet.add(userRole);
         newUser.setPassword(encodedPassword);
         newUser.setAuthorities(roleSet);
-        newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
         newUser.setMfaEnabled(user.isMfaEnabled());
         if (user.isMfaEnabled()) {
             newUser.setSecret(mfaAuthenticationService.generateNewSecret());
@@ -61,10 +58,10 @@ public class AuthenticationService {
     public LoginResponseDTO loginUser(LoginRequestDTO user) {
         try {
 
-            User recievedUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new EntityNotFoundException(
-                    String.format("No user found with %S", user.getUsername())));
+            User recievedUser = userRepository.findByUsername(user.getEmail()).orElseThrow(() -> new EntityNotFoundException(
+                    String.format("No user found with %S", user.getEmail())));
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
             );
             String token = tokenService.generateJwt(authentication);
             // TODO: Handle empty JWT in front end to redirect to MFA Screen
@@ -82,12 +79,12 @@ public class AuthenticationService {
         System.out.println(verificationRequest);
         try {
             User user = userRepository
-                    .findByUsername(verificationRequest.getUsername()).orElseThrow(() -> new EntityNotFoundException(
-                            String.format("No user found with %S", verificationRequest.getUsername())));
+                    .findByUsername(verificationRequest.getEmail()).orElseThrow(() -> new EntityNotFoundException(
+                            String.format("No user found with %S", verificationRequest.getEmail())));
             System.out.println(user);
             // Idhar error aa rha hai
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(verificationRequest.getUsername(), verificationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(verificationRequest.getEmail(), verificationRequest.getPassword())
             );
             if (mfaAuthenticationService.isOtpNotValid(user.getSecret(), verificationRequest.getCode())) {
                 throw new BadCredentialsException("Code is not correct");

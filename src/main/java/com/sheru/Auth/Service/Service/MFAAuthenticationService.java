@@ -21,9 +21,9 @@ public class MFAAuthenticationService {
 
     public String generateQrCodeImageUri(String secret) {
         QrData data = new QrData.Builder()
-                .label("Food Quest API MFA")
+                .label("Internation MFA")
                 .secret(secret)
-                .issuer("Shreyans Sethia")
+                .issuer("SAAS")
                 .algorithm(HashingAlgorithm.SHA1)
                 .digits(6)
                 .period(30)

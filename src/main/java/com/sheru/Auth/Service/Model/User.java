@@ -15,20 +15,11 @@ import java.util.*;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    private Long userId;
+    @GeneratedValue (strategy = GenerationType.UUID)
+    private String userId;
 
     @Column(unique = true)
     private String email;
-
-    @Column
-    private String firstName;
-
-    @Column
-    private String lastName;
-
-    @Column(unique = true)
-    private String username;
 
     @Column(length = 1000)
     @JsonIgnore
@@ -57,36 +48,31 @@ public class User implements UserDetails {
 
     public User(String email, String firstName, String lastName, String username, String password, Set<Role> authorities, String application) {
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
         this.password = password;
         this.authorities = authorities;
         this.application = application;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long id) {
+    public void setUserId(String id) {
         this.userId = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String userName) {
-        this.username = userName;
-    }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
     public String getPassword() {
-        return  password;
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public String getEmail() {
@@ -95,22 +81,6 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public boolean isMfaEnabled() {
